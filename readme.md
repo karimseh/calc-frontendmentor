@@ -12,4 +12,4 @@ Project is created with:
 
 ##Live site
 
-(https://github.com/user/repo/blob/branch/other_file.md)
+(https://ksehcalc.netlify.app/)
