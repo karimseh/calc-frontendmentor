@@ -2,6 +2,13 @@ const theme_trigger_1 = document.querySelector('#state-1');
 const theme_trigger_2 = document.querySelector('#state-2');
 const theme_trigger_3 = document.querySelector('#state-3');
 
+const Numbers = document.querySelectorAll('[data-num]');
+const Operations = document.querySelectorAll('[data-op]');
+const screen  = document.querySelector('#result');
+const equal  = document.querySelector('#equal');
+const reset  = document.querySelector('#reset');
+const del  = document.querySelector('#del');
+
 const THEME1 = {
      BACKGROUND_COLOR: "hsl(222, 26%, 31%)",
      KEYPAD_COLOR : "hsl(223, 31%, 20%)",
@@ -49,6 +56,8 @@ const THEME3 = {
      EQUAL_COLOR_3: "hsl(198, 20%, 13%)",
 }
 
+
+
 function applyTheme(theme){
     let root = document.documentElement;
     root.style.setProperty('--BACKGROUND_COLOR',theme.BACKGROUND_COLOR);
@@ -81,3 +90,124 @@ theme_trigger_3.addEventListener('change', ()=>{
         applyTheme(THEME3);
     }
 })
+
+
+var first_operand ;
+var ope;
+Operations.forEach((op)=>{
+    op.addEventListener('click', ()=>{
+        
+        switch(op.innerHTML){
+        case "+":
+            first_operand ? first_operand += Number(screen.innerHTML) : first_operand= Number(screen.innerHTML);
+            ope = "+"
+            screen.innerHTML = "0";
+        break;
+        case "-":
+            first_operand ? first_operand -= Number(screen.innerHTML) :first_operand= Number(screen.innerHTML);
+            ope = "-"
+            screen.innerHTML = "0";
+        break;
+        case "/":
+            first_operand ? first_operand /= Number(screen.innerHTML) :first_operand= Number(screen.innerHTML);
+            ope = "/"
+            screen.innerHTML = "0";
+        break;
+        case "x":
+            first_operand ? first_operand *= Number(screen.innerHTML) : first_operand= Number(screen.innerHTML);
+            ope = "x"
+            screen.innerHTML = "0";
+        break;
+            }
+        op.blur()
+    })
+    
+
+})
+Numbers.forEach((num)=>{
+    num.addEventListener('click',()=>{
+        screen.innerHTML === "0" && num.innerHTML !== "." ? screen.innerHTML = num.innerHTML : screen.innerHTML += num.innerHTML;
+        num.blur();
+    })
+})
+equal.addEventListener("click", ()=>{
+    if(first_operand){
+
+        let second_operand = Number(screen.innerHTML);
+        let result;
+        switch(ope){
+            case "+":
+                result = second_operand + first_operand;
+                screen.innerHTML = result;
+                first_operand = undefined;
+            break;
+            case "-":
+                result = first_operand - second_operand;
+                screen.innerHTML = result;
+                first_operand = undefined;
+            break;
+            case "/":
+                result = first_operand / second_operand;
+                screen.innerHTML = result;
+                first_operand = undefined;
+            break;
+            case "x":
+                result = second_operand * first_operand;
+                screen.innerHTML = result;
+                first_operand = undefined;
+            break;
+        }
+    }
+    
+})
+reset.addEventListener('click',()=>{
+    first_operand = undefined;
+    ope= undefined;
+    screen.innerHTML = "0";
+    reset.blur()
+
+})
+
+del.addEventListener("click",()=>{
+    if(screen.innerHTML !== "0"  && screen.innerHTML.length != 1){
+    screen.innerHTML = screen.innerHTML.slice(0, -1)
+        
+    }else {
+        screen.innerHTML = "0"
+    }
+    del.blur();
+})
+
+document.addEventListener('keydown', (event) => {
+        
+        Numbers.forEach((num)=>{
+            if(num.innerHTML === event.key){
+                num.click()
+            }
+        })
+        Operations.forEach((op)=>{
+            if(op.innerHTML === event.key){
+               
+                op.click()
+            }else if(op.innerHTML === "x" && event.key === "*"){
+                op.click()
+            }
+        })
+        if(event.key === "Backspace"){
+           
+            del.click()
+        }
+        if(event.key === "Enter"){
+            
+            equal.click()
+        }
+
+  }, false);
+
+  document.querySelector('.__result').addEventListener('click',()=>{
+      navigator.clipboard.writeText(screen.innerHTML);
+      document.querySelector('.__copy_to_clipboard').style.display = "flex";
+      setTimeout(()=>{
+        document.querySelector('.__copy_to_clipboard').style.display = "none";
+      },5000)
+  })
