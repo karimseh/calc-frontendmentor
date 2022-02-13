@@ -57,7 +57,10 @@ const THEME3 = {
 }
 
 
-
+/**
+ * 
+ * @param {Object} theme object containing css variable values 
+ */
 function applyTheme(theme){
     let root = document.documentElement;
     root.style.setProperty('--BACKGROUND_COLOR',theme.BACKGROUND_COLOR);
@@ -130,6 +133,9 @@ Numbers.forEach((num)=>{
         num.blur();
     })
 })
+/**
+ * Equal Button Click Event Listener
+ */
 equal.addEventListener("click", ()=>{
     if(first_operand){
 
@@ -160,6 +166,9 @@ equal.addEventListener("click", ()=>{
     }
     
 })
+/**
+ * Reset Button Click Event Listener
+ */
 reset.addEventListener('click',()=>{
     first_operand = undefined;
     ope= undefined;
@@ -167,7 +176,9 @@ reset.addEventListener('click',()=>{
     reset.blur()
 
 })
-
+/**
+ * DEL Button Click Event Listener
+ */
 del.addEventListener("click",()=>{
     if(screen.innerHTML !== "0"  && screen.innerHTML.length != 1){
     screen.innerHTML = screen.innerHTML.slice(0, -1)
@@ -178,6 +189,9 @@ del.addEventListener("click",()=>{
     del.blur();
 })
 
+/**
+ * Keyboard Press Event Listener
+ */
 document.addEventListener('keydown', (event) => {
         
         Numbers.forEach((num)=>{
@@ -204,10 +218,11 @@ document.addEventListener('keydown', (event) => {
 
   }, false);
 
+  /**
+   * Copy to Clipboard When Click on Result 
+   */
   document.querySelector('.__result').addEventListener('click',()=>{
       navigator.clipboard.writeText(screen.innerHTML);
       document.querySelector('.__copy_to_clipboard').style.display = "flex";
-      setTimeout(()=>{
-        document.querySelector('.__copy_to_clipboard').style.display = "none";
-      },5000)
+    
   })
