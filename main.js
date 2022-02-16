@@ -154,7 +154,13 @@ equal.addEventListener("click", ()=>{
             break;
             case "/":
                 result = first_operand / second_operand;
-                screen.innerHTML = result;
+
+                if(result === Infinity){
+
+                    screen.innerHTML = "0";
+                }else{
+                    screen.innerHTML = result;
+                }
                 first_operand = undefined;
             break;
             case "x":
